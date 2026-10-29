@@ -13,7 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 현재 상태
 
 - 1일차 앱을 만들었고 로컬에서 확인했습니다. 배포는 하지 않았습니다(사용자가 따로 요청할 때만 배포합니다).
-- Git 저장소는 아직 아닙니다.
+- Git 저장소(`main` 갈래)입니다. 원격 저장소(GitHub)는 아직 연결하지 않았습니다.
 - `sample-questions.json`은 형식 참고와 테스트용 파일입니다. 앱에 넣어 두거나 자동으로 불러오지 않습니다.
 
 ## 명령
@@ -48,7 +48,7 @@ node --test lib/quiz/score.test.ts   # 테스트 파일 하나만 실행
 - Windows 11, PowerShell 5.1
 - Node.js v26.13.0, npm·npx 11.20.0, Git 2.56.0이 설치되어 있습니다(`C:\Program Files\nodejs`, `C:\Program Files\Git`).
 - PowerShell 실행 정책 때문에 `npm`/`npx`가 막히면 `npm.cmd`/`npx.cmd`로 실행합니다.
-- Git 사용자 이름·이메일 설정은 아직 확인하지 않았습니다. 첫 커밋 전에 확인합니다.
+- Git 사용자 이름·이메일은 이 컴퓨터 전체(global)에 설정되어 있습니다(YeonSu-Lee).
 - Vercel·GitHub 계정 로그인은 사용자가 직접 합니다. Claude가 비밀번호를 입력하지 않습니다.
 
 ## 작업 규칙
