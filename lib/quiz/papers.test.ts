@@ -12,11 +12,14 @@ const question = {
   explanation: "해설",
 };
 
-test("실제 문제지 폴더에서 예시 문제지를 제목과 함께 읽는다", () => {
+test("실제 문제지 폴더의 문제지를 파일 이름 순으로 제목과 함께 읽는다", () => {
   const papers = loadQuestionPapers();
   assert.deepEqual(
     papers.map((paper) => [paper.id, paper.title, paper.questions.length]),
-    [["sample-questions", "중학교 정보과목", 10]],
+    [
+      ["high-school-questions", "고등학교 정보과목", 10],
+      ["sample-questions", "중학교 정보과목", 10],
+    ],
   );
 });
 

@@ -49,7 +49,9 @@
 }
 ```
 
-- 현재 들어 있는 문제지: question-papers/sample-questions.json ("중학교 정보과목", 10문항)
+- 현재 들어 있는 문제지(목록 순서):
+  - question-papers/high-school-questions.json ("고등학교 정보과목", 10문항)
+  - question-papers/sample-questions.json ("중학교 정보과목", 10문항)
 
 ## 홈 화면(문제지 목록)
 

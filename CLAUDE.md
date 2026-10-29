@@ -16,7 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - 1일차 앱(현재 버전: 문제지 목록 방식)을 만들었고 로컬에서 확인했습니다. 배포는 하지 않았습니다(사용자가 따로 요청할 때만 배포합니다).
 - Git 저장소(`main` 갈래)입니다. 원격 저장소(GitHub)는 아직 연결하지 않았습니다.
-- 문제지는 `question-papers/sample-questions.json`("중학교 정보과목", 10문항) 하나입니다. 문제지 파일의 문제·보기·정답·해설은 사용자 요청 없이 바꾸지 않고, 확인용 문제지를 이 폴더에 임의로 추가하지 않습니다(여러 문제지 동작은 `papers.test.ts`가 OS 임시 폴더에서 확인합니다).
+- 문제지는 `question-papers/high-school-questions.json`("고등학교 정보과목", 10문항)과 `question-papers/sample-questions.json`("중학교 정보과목", 10문항) 두 개입니다. `papers.test.ts`의 첫 테스트가 이 목록을 그대로 확인하므로, 문제지를 추가·삭제하면 그 테스트도 함께 고칩니다. 문제지 파일의 문제·보기·정답·해설은 사용자 요청 없이 바꾸지 않고, 확인용 문제지를 이 폴더에 임의로 추가하지 않습니다(여러 문제지 동작은 `papers.test.ts`가 OS 임시 폴더에서 확인합니다).
 
 ## 명령
 
