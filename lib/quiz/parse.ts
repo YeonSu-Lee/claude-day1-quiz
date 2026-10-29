@@ -3,7 +3,7 @@ import type { Question } from "./types";
 export const OPTION_COUNT = 4;
 
 export type ParseResult =
-  | { ok: true; questions: Question[] }
+  | { ok: true; title: string; questions: Question[] }
   | { ok: false; errors: string[] };
 
 function isNonEmptyString(value: unknown): value is string {
@@ -15,8 +15,8 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 /**
- * 업로드한 문제 파일의 글자를 읽어 문항 목록으로 바꿉니다.
- * 잘못된 문항이 하나라도 있으면 파일 전체를 거부하고, 이용자에게 보여줄 오류 문구를 돌려줍니다.
+ * 문제지 파일의 글자를 읽어 제목과 문항 목록으로 바꿉니다.
+ * 제목이 없거나 잘못된 문항이 하나라도 있으면 파일 전체를 거부하고, 무엇이 잘못됐는지 오류 문구로 돌려줍니다.
  */
 export function parseQuizFile(text: string): ParseResult {
   let data: unknown;
@@ -43,6 +43,11 @@ export function parseQuizFile(text: string): ParseResult {
 
   const errors: string[] = [];
   const questions: Question[] = [];
+  const { title } = data;
+
+  if (!isNonEmptyString(title)) {
+    errors.push("문제지 제목(title)이 비어 있습니다.");
+  }
 
   data.questions.forEach((item: unknown, index: number) => {
     const no = index + 1;
@@ -91,5 +96,5 @@ export function parseQuizFile(text: string): ParseResult {
   if (errors.length > 0) {
     return { ok: false, errors };
   }
-  return { ok: true, questions };
+  return { ok: true, title: title as string, questions };
 }

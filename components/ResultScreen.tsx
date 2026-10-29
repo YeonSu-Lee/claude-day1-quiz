@@ -1,9 +1,10 @@
 import type { GradeResult } from "@/lib/quiz/score";
 
 type Props = {
+  title: string;
   grade: GradeResult;
   onRetry: () => void;
-  onChooseNewFile: () => void;
+  onBackToList: () => void;
 };
 
 function optionText(options: string[], number: number | null) {
@@ -11,9 +12,10 @@ function optionText(options: string[], number: number | null) {
   return `${number}. ${options[number - 1]}`;
 }
 
-export default function ResultScreen({ grade, onRetry, onChooseNewFile }: Props) {
+export default function ResultScreen({ title, grade, onRetry, onBackToList }: Props) {
   return (
     <section className="card">
+      <p className="paper-title">{title}</p>
       <h1>채점 결과</h1>
       <div className="score-box">
         <p className="score">
@@ -47,8 +49,8 @@ export default function ResultScreen({ grade, onRetry, onChooseNewFile }: Props)
       </ol>
 
       <div className="actions">
-        <button type="button" className="button" onClick={onChooseNewFile}>
-          새 파일 올리기
+        <button type="button" className="button" onClick={onBackToList}>
+          문제지 목록으로
         </button>
         <button type="button" className="button primary" onClick={onRetry}>
           다시 풀기

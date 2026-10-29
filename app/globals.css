@@ -139,51 +139,44 @@ p {
   flex: 1;
 }
 
-/* 파일 선택 */
-.file-button {
-  margin-top: 16px;
-  width: 100%;
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-
-.error-box {
-  margin-top: 20px;
-  padding: 16px;
-  border: 1px solid var(--wrong);
-  border-radius: 10px;
-  background: var(--wrong-soft);
-}
-
-.error-box ul {
-  margin: 8px 0;
-  padding-left: 20px;
-}
-
-.error-title {
-  font-weight: 700;
-  color: var(--wrong);
-}
-
-/* 문항 확인 */
-.preview-list {
+/* 문제지 목록 */
+.paper-list {
+  list-style: none;
   margin: 16px 0 0;
-  padding: 12px 12px 12px 36px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  max-height: 50vh;
-  overflow-y: auto;
+  padding: 0;
+  display: grid;
+  gap: 10px;
 }
 
-.preview-list li + li {
-  margin-top: 8px;
+.paper-button {
+  display: block;
+  width: 100%;
+  min-height: 56px;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.paper-button:hover {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.paper-button:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.paper-title {
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 /* 문제풀이 */

@@ -1,6 +1,7 @@
 import type { Answers, Question } from "@/lib/quiz/types";
 
 type Props = {
+  title: string;
   questions: Question[];
   answers: Answers;
   current: number;
@@ -9,7 +10,7 @@ type Props = {
   onSubmit: () => void;
 };
 
-export default function QuizScreen({ questions, answers, current, onSelect, onMove, onSubmit }: Props) {
+export default function QuizScreen({ title, questions, answers, current, onSelect, onMove, onSubmit }: Props) {
   const total = questions.length;
   const question = questions[current];
   const isLast = current === total - 1;
@@ -18,6 +19,7 @@ export default function QuizScreen({ questions, answers, current, onSelect, onMo
 
   return (
     <section className="card">
+      <p className="paper-title">{title}</p>
       <div className="progress-header">
         <span className="progress-count">
           {current + 1} / {total}
