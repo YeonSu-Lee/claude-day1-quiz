@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { cleanStudentName, MAX_STUDENT_NAME_LENGTH } from "@/lib/results/name";
 
 type Props = {
   onEnter: (name: string) => void;
@@ -12,12 +13,12 @@ export default function StudentNameScreen({ onEnter }: Props) {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const trimmed = name.trim();
-    if (trimmed === "") {
+    const cleaned = cleanStudentName(name);
+    if (cleaned === "") {
       setShowError(true);
       return;
     }
-    onEnter(trimmed);
+    onEnter(cleaned);
   }
 
   return (
@@ -31,6 +32,7 @@ export default function StudentNameScreen({ onEnter }: Props) {
           id="student-name"
           type="text"
           autoComplete="off"
+          maxLength={MAX_STUDENT_NAME_LENGTH}
           value={name}
           onChange={(event) => {
             setName(event.target.value);

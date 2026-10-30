@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, type User } from "firebase/auth";
+import TeacherDashboard from "@/components/TeacherDashboard";
 import { firebaseAuth } from "@/lib/firebase/client";
 
 type Status =
   | { kind: "checking" }
   | { kind: "signed-out" }
-  | { kind: "allowed"; email: string }
+  | { kind: "allowed"; email: string; user: User }
   | { kind: "denied"; email: string };
 
 // 로그인 오류를 쉬운 말로 바꿉니다. 창을 닫은 경우처럼 안내가 필요 없으면 null.
@@ -38,7 +39,7 @@ async function askServer(user: User): Promise<Status> {
   const response = await fetch("/api/teacher/me", { headers: { Authorization: `Bearer ${token}` } });
   if (response.ok) {
     const body = (await response.json()) as { email: string };
-    return { kind: "allowed", email: body.email };
+    return { kind: "allowed", email: body.email, user };
   }
   if (response.status === 403) return { kind: "denied", email: user.email ?? "" };
   throw new Error(`teacher check failed: ${response.status}`);
@@ -125,18 +126,7 @@ export default function TeacherScreen() {
             </button>
           </div>
           <p className="lead">문제를 등록하고 학생들의 풀이 결과를 확인하는 곳입니다.</p>
-
-          <div className="panel">
-            <h2>문제 등록</h2>
-            <p className="hint">
-              준비 중입니다. 지금은 문제지 파일을 앱의 question-papers 폴더에 넣어야 학생 화면 목록에 나타납니다.
-            </p>
-          </div>
-
-          <div className="panel">
-            <h2>학생 풀이 결과</h2>
-            <p className="hint">준비 중입니다. 풀이 결과 저장이 연결되면 학생별 점수를 이곳에서 볼 수 있습니다.</p>
-          </div>
+          <TeacherDashboard user={status.user} />
         </>
       )}
 

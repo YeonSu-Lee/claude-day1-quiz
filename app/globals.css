@@ -257,6 +257,106 @@ a.button {
   border-radius: 10px;
 }
 
+.card h3 {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+}
+
+.file-input {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.error-list {
+  margin: 4px 0 0;
+  padding-left: 20px;
+}
+
+.preview {
+  margin-top: 16px;
+}
+
+.preview-options {
+  margin: 6px 0 0;
+  padding-left: 22px;
+}
+
+.preview-options .correct-option {
+  font-weight: 600;
+  color: var(--correct);
+}
+
+.preview-options .badge {
+  margin-left: 6px;
+}
+
+.badge.muted {
+  background: var(--bg);
+  color: var(--muted);
+}
+
+.teacher-papers {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.teacher-paper {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.teacher-paper-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.teacher-paper-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.results-box {
+  margin-top: 12px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.results-table th,
+.results-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.results-table th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
 /* 문제풀이 */
 .progress-header {
   display: flex;

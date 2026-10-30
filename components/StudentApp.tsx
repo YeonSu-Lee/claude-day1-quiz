@@ -3,14 +3,10 @@
 import { useState } from "react";
 import QuizApp from "@/components/QuizApp";
 import StudentNameScreen from "@/components/StudentNameScreen";
-import type { QuestionPaper } from "@/lib/quiz/types";
 
-type Props = {
-  papers: QuestionPaper[];
-};
-
-// 학생 이름도 풀이 상태처럼 어디에도 저장하지 않습니다. 새로고침하면 이름 입력부터 다시 합니다.
-export default function StudentApp({ papers }: Props) {
+// 학생 이름은 브라우저에 저장하지 않습니다. 새로고침하면 이름 입력부터 다시 합니다.
+// 이름은 최종 제출할 때 결과와 함께 서버에 저장됩니다.
+export default function StudentApp() {
   const [studentName, setStudentName] = useState<string | null>(null);
 
   return (
@@ -27,7 +23,7 @@ export default function StudentApp({ papers }: Props) {
               나가기
             </button>
           </div>
-          <QuizApp papers={papers} />
+          <QuizApp studentName={studentName} />
         </>
       )}
     </main>

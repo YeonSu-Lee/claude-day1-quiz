@@ -1,16 +1,31 @@
-import type { Answers, Question } from "@/lib/quiz/types";
+import type { Answers, PublicQuestion } from "@/lib/quiz/types";
 
 type Props = {
   title: string;
-  questions: Question[];
+  /** 풀이 중에는 정답·해설 없이 문제와 보기만 받습니다. */
+  questions: PublicQuestion[];
   answers: Answers;
   current: number;
+  /** 최종 제출을 서버에 보내는 중 */
+  submitting: boolean;
+  /** 제출(저장) 실패 안내. 다시 "채점하기"를 누를 수 있습니다. */
+  submitError: string | null;
   onSelect: (index: number, option: number) => void;
   onMove: (index: number) => void;
   onSubmit: () => void;
 };
 
-export default function QuizScreen({ title, questions, answers, current, onSelect, onMove, onSubmit }: Props) {
+export default function QuizScreen({
+  title,
+  questions,
+  answers,
+  current,
+  submitting,
+  submitError,
+  onSelect,
+  onMove,
+  onSubmit,
+}: Props) {
   const total = questions.length;
   const question = questions[current];
   const isLast = current === total - 1;
@@ -71,9 +86,9 @@ export default function QuizScreen({ title, questions, answers, current, onSelec
             type="button"
             className="button primary"
             onClick={onSubmit}
-            disabled={unanswered.length > 0}
+            disabled={unanswered.length > 0 || submitting}
           >
-            채점하기
+            {submitting ? "제출하는 중…" : "채점하기"}
           </button>
         ) : (
           <button type="button" className="button primary" onClick={() => onMove(current + 1)}>
@@ -81,6 +96,12 @@ export default function QuizScreen({ title, questions, answers, current, onSelec
           </button>
         )}
       </div>
+
+      {submitError && (
+        <p className="notice notice-wrong" role="alert">
+          {submitError}
+        </p>
+      )}
 
       {isLast && unanswered.length > 0 && (
         <div className="notice" role="status">
