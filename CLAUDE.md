@@ -14,8 +14,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 현재 상태
 
-- 1일차 앱(현재 버전: 문제지 목록 방식)을 만들었고 로컬에서 확인했습니다. 배포는 하지 않았습니다(사용자가 따로 요청할 때만 배포합니다).
-- Git 저장소(`main` 갈래)입니다. 원격 저장소 `origin`은 GitHub 비공개 저장소 https://github.com/YeonSu-Lee/claude-day1-quiz 입니다. 이 저장소에 자동 배포 연결은 없습니다.
+- 1일차 앱(현재 버전: 문제지 목록 방식)을 만들었고 Vercel에 배포했습니다(2026-10-30). 다시 배포하는 것은 사용자가 요청할 때만 합니다.
+  - 정식 주소: https://claude-day1-quiz-puce.vercel.app (로그인 없이 열림)
+  - Vercel 계정 `yslee5208-8630`, 팀 `yeon-2769`(무료 Hobby), 프로젝트 `claude-day1-quiz`. 이 폴더는 `vercel link`로 연결되어 있습니다(`.vercel`, `.env.local`은 Git에서 제외됨).
+  - 다시 배포: `vercel deploy --prod --yes`. GitHub 연결이 없어 push해도 자동 배포되지 않습니다.
+  - 컴퓨터 이름이 한글("노트북95")이라 Vercel CLI의 `login` 등이 `ByteString` 오류로 실패합니다. 이때는 `os.hostname()`을 영문 이름으로 바꾸는 작은 `.mjs` 파일을 `NODE_OPTIONS='--import file:///...'`로 그 명령에만 적용해 실행합니다.
+- 2일차를 시작해 첫 화면 교사/학생 선택, 교사 화면 기본 틀, 학생 이름 입장, 교사 Google 로그인을 추가했습니다(로컬 확인만, 아직 배포하지 않음). Firestore 저장·AI 문제 생성은 아직 없습니다.
+- Firebase 프로젝트 `claude-day1-quiz-yslee`(표시 이름 claude-day1-quiz, 무료 Spark), 웹 앱 `quiz-web`(App ID `1:237614242596:web:207549c51538c5ceeb31b1`). 이 컴퓨터의 Firebase CLI는 yslee5208@gmail.com으로 로그인되어 있습니다. 교사 허용 계정도 yslee5208@gmail.com입니다.
+  - Authentication: Google 로그인 사용 설정됨. 승인된 도메인: `localhost`, 기본 Firebase 도메인 2개, `claude-day1-quiz-puce.vercel.app`.
+  - 콘솔 설정(승인된 도메인 등)은 Firebase CLI의 로그인 정보로 Identity Toolkit 관리 API(`admin/v2/projects/<id>/config`)를 호출해 바꿀 수 있습니다. 사용자가 브라우저를 직접 조작하지 않게 이 방법을 먼저 씁니다.
+- Git 저장소(`main` 갈래)입니다. 원격 저장소 `origin`은 GitHub 비공개 저장소 https://github.com/YeonSu-Lee/claude-day1-quiz 입니다. 이 저장소와 Vercel은 연결되어 있지 않습니다.
 - 문제지는 `question-papers/high-school-questions.json`("고등학교 정보과목", 10문항)과 `question-papers/sample-questions.json`("중학교 정보과목", 10문항) 두 개입니다. `papers.test.ts`의 첫 테스트가 이 목록을 그대로 확인하므로, 문제지를 추가·삭제하면 그 테스트도 함께 고칩니다. 문제지 파일의 문제·보기·정답·해설은 사용자 요청 없이 바꾸지 않고, 확인용 문제지를 이 폴더에 임의로 추가하지 않습니다(여러 문제지 동작은 `papers.test.ts`가 OS 임시 폴더에서 확인합니다).
 
 ## 명령
@@ -34,8 +42,14 @@ node --test lib/quiz/score.test.ts   # 테스트 파일 하나만 실행
 
 ## 구조
 
-- `app/page.tsx`(서버 컴포넌트)가 `loadQuestionPapers()`로 `question-papers/`를 읽어 `components/QuizApp.tsx`(클라이언트)에 넘깁니다.
-  - 홈은 빌드할 때 정적으로 만들어집니다. 그래서 배포된 사이트에서는 문제지를 바꾸면 다시 빌드해야 합니다. 개발 서버는 요청마다 다시 읽습니다.
+- 주소별 화면: `app/page.tsx`(`/`, 교사/학생 선택), `app/teacher/page.tsx`(`/teacher`, `components/TeacherScreen.tsx`), `app/student/page.tsx`(`/student`).
+- 교사 로그인: `TeacherScreen`이 Firebase Auth(Google, 팝업)로 로그인한 뒤 ID 토큰을 `GET /api/teacher/me`(`app/api/teacher/me/route.ts`)에 보내고, 서버가 허용해야 내용을 보여줍니다.
+  - 서버 확인은 `lib/auth/teacher.ts`의 `verifyTeacherRequest()`입니다. `jose`로 Google 공개키를 써서 토큰을 검증하므로 서비스 계정 비밀키가 필요 없습니다. 새 교사용 API도 반드시 이 함수를 먼저 거치게 합니다.
+  - 브라우저용 Firebase 연결은 `lib/firebase/client.ts`입니다.
+  - 설정은 `.env`(Git 제외)에 있습니다: `NEXT_PUBLIC_FIREBASE_*`(공개 웹 설정), `TEACHER_EMAIL`(허용 교사 이메일, 서버에서만 읽음). Vercel에 배포할 때는 같은 값을 Vercel 환경변수에도 넣어야 합니다.
+- `app/student/page.tsx`(서버 컴포넌트)가 `loadQuestionPapers()`로 `question-papers/`를 읽어 `components/StudentApp.tsx`(클라이언트)에 넘깁니다.
+  - 학생 화면은 빌드할 때 정적으로 만들어집니다. 그래서 배포된 사이트에서는 문제지를 바꾸면 다시 빌드해야 합니다. 개발 서버는 요청마다 다시 읽습니다.
+- `StudentApp.tsx`는 이름 입력(`StudentNameScreen`)을 거친 뒤 학생 이름 줄과 `QuizApp`을 보여줍니다. 이름도 React 상태로만 가집니다.
 - `QuizApp.tsx`가 단계 상태(`list → solving → result`)와 선택한 문제지·답·현재 위치를 React 상태로만 가지며, 어디에도 저장하지 않습니다.
 - 나머지 화면(`PaperListScreen`, `QuizScreen`, `ResultScreen`)은 props와 콜백만 받습니다.
 - `lib/quiz/`는 화면과 분리된 로직입니다. 2일차 기능도 같은 `Question`/`QuestionPaper` 타입을 쓰도록 이어 붙입니다.
@@ -54,6 +68,8 @@ node --test lib/quiz/score.test.ts   # 테스트 파일 하나만 실행
 - Windows 11, PowerShell 5.1
 - Node.js v26.13.0, npm·npx 11.20.0, Git 2.56.0이 설치되어 있습니다(`C:\Program Files\nodejs`, `C:\Program Files\Git`).
 - PowerShell 실행 정책 때문에 `npm`/`npx`가 막히면 `npm.cmd`/`npx.cmd`로 실행합니다.
+- 현재 사용자 PowerShell 실행 정책은 RemoteSigned입니다. Vercel CLI 65.8.0과 Firebase CLI 15.34.2는 `C:\Users\user\AppData\Roaming\npm`에 전역 설치되어 있습니다.
+- Claude의 PowerShell 도구는 격리된 환경이라, 그 안에서 한 전역 설치나 설정 변경은 실제 컴퓨터에 남지 않습니다. 실제 컴퓨터에 설치하거나 설정을 바꿀 때는 터미널 패널(`run_in_terminal`)을 쓰고, 그 패널에서 결과를 확인합니다.
 - Git 사용자 이름·이메일은 이 컴퓨터 전체(global)에 설정되어 있습니다(YeonSu-Lee).
 - Vercel·GitHub 계정 로그인은 사용자가 직접 합니다. Claude가 비밀번호를 입력하지 않습니다.
 

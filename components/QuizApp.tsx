@@ -42,7 +42,7 @@ export default function QuizApp({ papers }: Props) {
   }
 
   return (
-    <main className="container">
+    <>
       {step === "list" && <PaperListScreen papers={papers} onSelect={startQuiz} />}
       {step === "solving" && paper && (
         <QuizScreen
@@ -63,6 +63,6 @@ export default function QuizApp({ papers }: Props) {
           onBackToList={backToList}
         />
       )}
-    </main>
+    </>
   );
 }

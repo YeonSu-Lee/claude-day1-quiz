@@ -173,10 +173,88 @@ p {
   outline-offset: 2px;
 }
 
+.paper-button .button-note {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+a.paper-button,
+a.button {
+  text-decoration: none;
+}
+
 .paper-title {
   color: var(--muted);
   font-size: 0.95rem;
   font-weight: 600;
+}
+
+/* 학생 이름 입력 */
+.name-form {
+  margin-top: 16px;
+}
+
+.name-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.name-form input {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.name-form input:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.name-form input[aria-invalid="true"] {
+  border-color: var(--wrong);
+}
+
+.error {
+  margin-top: 8px;
+  color: var(--wrong);
+  font-weight: 600;
+}
+
+.student-bar,
+.account-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* 교사 화면 */
+.notice.notice-wrong {
+  border-color: var(--wrong);
+  background: var(--wrong-soft);
+}
+
+
+.card h2 {
+  margin: 0 0 6px;
+  font-size: 1.15rem;
+}
+
+.panel {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
 }
 
 /* 문제풀이 */
